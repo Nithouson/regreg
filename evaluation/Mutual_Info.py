@@ -2,14 +2,10 @@ from GridData5 import *
 import xlwt
 
 Side = 25
-sid, tid = 0, 49
+ids, idt = 50, 53
 
 def recordnum(dataid):
-    if dataid in [1, 5, 16]:
-        return 46
-    elif 20 <= dataid < 50:
-        return 49
-    return 45
+    return 54
 
 noiselevel = ['low noise', 'medium noise', 'high noise']
 method = ['KM', 'AZP', 'RKM', 'GWR']
@@ -46,7 +42,7 @@ for noi in noiselevel:
         sheet.write(0, 4*m+3, label=method[m]+'_MI')
         sheet.write(0, 4*m+4, label=method[m]+'_NMI')
 
-for id in range(sid,tid+1):
+for id in range(ids,idt):
     resfile = open("../log/result_" + str(recordnum(id)) + "_" + str(id) + ".txt")
     for noi in noiselevel:
         print(str(id) + noiselabel[noi])
@@ -56,7 +52,7 @@ for id in range(sid,tid+1):
         for u in range(Side*Side):
             regions[int(round(coeff[u, 1]))].append(u)
         assert sum([len(reg) for reg in regions]) == Side*Side
-        sheets[noi].write(id + 1, 0, label='data_' + str(id))
+        sheets[noi].write(id-ids + 1, 0, label='data_' + str(id))
 
         for m in range(4):
             zonemap = [[-1 for c in range(Side)] for r in range(Side)]
@@ -85,9 +81,9 @@ for id in range(sid,tid+1):
                     rcoeff[z][v] = float(zoneline[v])
 
             hp, hr, mi, nmi = Mutual_Info(regions_pred,regions)
-            sheets[noi].write(id + 1, 4 * m + 1, label=hp)
-            sheets[noi].write(id + 1, 4 * m + 2, label=hr)
-            sheets[noi].write(id+1, 4 * m + 3, label=mi)
-            sheets[noi].write(id+1, 4 * m + 4, label=nmi)
+            sheets[noi].write(id-ids + 1, 4 * m + 1, label=hp)
+            sheets[noi].write(id-ids + 1, 4 * m + 2, label=hr)
+            sheets[noi].write(id-ids + 1, 4 * m + 3, label=mi)
+            sheets[noi].write(id-ids + 1, 4 * m + 4, label=nmi)
 
 outxls.save("MutualInfo.xls")

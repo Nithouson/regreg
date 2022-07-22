@@ -2,14 +2,10 @@ from GridData5 import *
 import xlwt
 
 Side = 25
-sid, tid = 0, 49
+ids, idt = 50, 53
 
 def recordnum(dataid):
-    if dataid in [1, 5, 16]:
-        return 46
-    elif 20 <= dataid < 50:
-        return 49
-    return 45
+    return 54
 
 noiselevel = ['low noise', 'medium noise', 'high noise']
 method = ['KModels', 'AZP', 'RegKModels', 'GWR']
@@ -47,13 +43,13 @@ for noi in noiselevel:
         sheet.write(0, 5*m+4, label=method[m]+'_TN')
         sheet.write(0, 5*m+5, label=method[m]+'_Rand')
 
-for id in range(sid,tid+1):
+for id in range(ids, idt):
     resfile = open("../log/result_" + str(recordnum(id)) + "_" + str(id) + ".txt")
     for noi in noiselevel:
         print(str(id) + noiselabel[noi])
         gt = open("../synthetic/edis_" + str(id) + noiselabel[noi] + ".txt")
         Xarr, Yarr, coeff = input_data_dis(gt, Side)
-        sheets[noi].write(id + 1, 0, label='data_' + str(id))
+        sheets[noi].write(id-ids + 1, 0, label='data_' + str(id))
 
         for m in range(4):
             zonemap = [[-1 for c in range(Side)] for r in range(Side)]
@@ -82,11 +78,11 @@ for id in range(sid,tid+1):
                     rcoeff[z][v] = float(zoneline[v])
 
             tp,fn,fp,tn,randi = Rand(zonemap,coeff[:,1])
-            sheets[noi].write(id+1, 5 * m + 1, label=tp)
-            sheets[noi].write(id+1, 5 * m + 2, label=fn)
-            sheets[noi].write(id+1, 5 * m + 3, label=fp)
-            sheets[noi].write(id+1, 5 * m + 4, label=tn)
-            sheets[noi].write(id+1, 5 * m + 5, label=randi)
+            sheets[noi].write(id-ids+1, 5 * m + 1, label=tp)
+            sheets[noi].write(id-ids+1, 5 * m + 2, label=fn)
+            sheets[noi].write(id-ids+1, 5 * m + 3, label=fp)
+            sheets[noi].write(id-ids+1, 5 * m + 4, label=tn)
+            sheets[noi].write(id-ids+1, 5 * m + 5, label=randi)
 
 outxls.save("Rand.xls")
 
