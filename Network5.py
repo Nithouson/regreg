@@ -220,8 +220,7 @@ def Test_Equations(regions,Xarr,Yarr,log):
 
         results = sm.OLS(Y, X).fit()
         print(results.summary())
-        f_test = results.f_test(np.identity(len(results.params))[1:, :])
         log.write(str(zone_id) + " " + str(zsize) + " " + str(results.params)
-                  + " " + str(f_test.fvalue[0][0]) + " " + str(f_test.pvalue)+'\n')
+                  + " " + str(results.fvalue) + " " + str(results.f_pvalue)+'\n')
     return
 

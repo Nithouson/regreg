@@ -6,17 +6,19 @@ from matplotlib import pyplot as plt
 import libpysal
 
 # Test Mode
-# Side, runs = 10, 5
+# Side = 10
 # ids, idt = 0, 3
 # Kmax = [5, 5, 5, 5]
+# prefix = 'edistest_'
 
 # Run Mode
 Side = 25
-ids, idt = 20, 50
+ids, idt = 50, 53
 Kmax = [20, 20, 20, 60]
+prefix = 'edis_'
 
 lamda = 5
-recordnum = 49
+recordnum = 50
 cmp = "RdBu_r"
 
 # Zones params
@@ -25,7 +27,7 @@ Kstep = 1
 vmin, vmax = -2.25, 2.25
 
 plt.rcParams['figure.figsize'] = (10.0, 14.0)  # inches; 3 row: 10,10 5 row: 10,14
-shrink_ratio = 1  # 3 row:0.81 5 row: 0.98
+shrink_ratio = 1
 title = ['low noise', 'medium noise', 'high noise']
 noiselevel = ['l', 'm', 'h']
 
@@ -44,7 +46,8 @@ for dataid in range(ids, idt):
     fig, axes = plt.subplots(5, 3, figsize=(10, 14))
     for noi in range(len(noiselevel)):
         print("Data " + str(dataid) + str(noiselevel[noi]))
-        simdata = open("./synthetic/edis_"+str(dataid)+noiselevel[noi]+".txt")
+        log.write("Data " + str(dataid) + str(noiselevel[noi])+'\n')
+        simdata = open("./synthetic/"+prefix+str(dataid)+noiselevel[noi]+".txt")
         Xarr, Yarr, coeff = input_data_dis(simdata, Side)
         coord = GetCoord(Side)
         w = libpysal.weights.lat2W(Side, Side)
@@ -79,8 +82,8 @@ for dataid in range(ids, idt):
         output_result(ofile, Side, minreg, "KModels")
         kfile.write('\n')
         axes[1, noi].set_title("KModels "+title[noi])
-        axes[1, noi].set_xticks([])  # 去掉x轴
-        axes[1, noi].set_yticks([])  # 去掉y轴
+        axes[1, noi].set_xticks([])
+        axes[1, noi].set_yticks([])
         im = axes[1, noi].imshow(reg_pic(minreg[0], Side, minreg[1], dim=1), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[1, noi], shrink=shrink_ratio)
 
@@ -106,8 +109,8 @@ for dataid in range(ids, idt):
         output_result(ofile, Side, minreg, "AZP")
         kfile.write('\n')
         axes[2, noi].set_title("AZP " + title[noi])
-        axes[2, noi].set_xticks([])  # 去掉x轴
-        axes[2, noi].set_yticks([])  # 去掉y轴
+        axes[2, noi].set_xticks([])
+        axes[2, noi].set_yticks([])
         im = axes[2, noi].imshow(reg_pic(minreg[0], Side, minreg[1], dim=1), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[2, noi], shrink=shrink_ratio)
 
@@ -133,8 +136,8 @@ for dataid in range(ids, idt):
         output_result(ofile, Side, minreg, "RegionKModels")
         kfile.write('\n')
         axes[3, noi].set_title("RegKModels "+title[noi])
-        axes[3, noi].set_xticks([])  # 去掉x轴
-        axes[3, noi].set_yticks([])  # 去掉y轴
+        axes[3, noi].set_xticks([])
+        axes[3, noi].set_yticks([])
         im = axes[3, noi].imshow(reg_pic(minreg[0], Side, minreg[1], dim=1), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[3, noi], shrink=shrink_ratio)
 
@@ -161,8 +164,8 @@ for dataid in range(ids, idt):
         output_result(ofile, Side, minreg, "GWR_cluster")
         kfile.write('\n')
         axes[4, noi].set_title("GWR "+title[noi])
-        axes[4, noi].set_xticks([])  # 去掉x轴
-        axes[4, noi].set_yticks([])  # 去掉y轴
+        axes[4, noi].set_xticks([])
+        axes[4, noi].set_yticks([])
         im = axes[4, noi].imshow(reg_pic(minreg[0], Side, minreg[1], dim=1), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[4, noi], shrink=shrink_ratio)
 

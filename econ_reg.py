@@ -6,19 +6,21 @@ from matplotlib import pyplot as plt
 import libpysal
 
 # Test Mode
-# Side, runs = 10, 5
-# ids, idt = 0, 5
+# Side = 10
+# ids, idt = 0, 3
 # Kmax = [5,5,5,5]
 # func = [Const(0), Slope(1/9, 1/9, -1), CosExpMul(9, 9)]
+# prefix = 'econtest_'
 
 # Run Mode
 Side = 25
-ids, idt = 20, 50
+ids, idt = 50, 53
 Kmax = [20, 20, 20, 60]
 func = [Const(0), Slope(1/24, 1/24, -1), CosExpMul(22, 22)]
+prefix = 'econ_'
 
 lamda = 5
-recordnum = 50
+recordnum = 54
 cmp = "RdBu_r"
 
 # Zones params
@@ -27,7 +29,7 @@ Kstep = 1
 vmin, vmax = -1, 1
 
 plt.rcParams['figure.figsize'] = (10.0, 14.0)  # inches; 3 row: 10,10 5 row: 10,14
-shrink_ratio = 1  # 3 row:0.81 5 row: 0.98
+shrink_ratio = 1
 title = ['$β_0$', '$β_1$', '$β_2$']
 
 log = open("RG"+str(recordnum)+".txt", 'w')
@@ -41,7 +43,8 @@ log.write("Method:\n KModels " + str(Kmin) + " " + str(Kmax[0]) + " "+str(Kstep)
 
 for dataid in range(ids, idt):
     print("Data " + str(dataid))
-    simdata = open("./synthetic/econ_"+str(dataid)+".txt")
+    log.write("Data "+ str(dataid)+'\n')
+    simdata = open("./synthetic/"+prefix+str(dataid)+".txt")
     Xarr, Yarr = input_data_con(simdata, Side, len(func))
     coeff = GetCoeff(Side, func)
     coord = GetCoord(Side)
@@ -77,8 +80,8 @@ for dataid in range(ids, idt):
               + " " + str(mininfo[3]) + " "+str(mininfo[4]) + '\n')
     for d in range(coeff.shape[1]):
         axes[1, d].set_title("KModels "+title[d])
-        axes[1, d].set_xticks([])  # 去掉x轴
-        axes[1, d].set_yticks([])  # 去掉y轴
+        axes[1, d].set_xticks([])
+        axes[1, d].set_yticks([])
         im = axes[1, d].imshow(reg_pic(minreg[0], Side, minreg[1], dim=d), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[1, d], shrink=shrink_ratio)
     output_result(ofile, Side, minreg, "KModels")
@@ -102,8 +105,8 @@ for dataid in range(ids, idt):
               + str(ed - st) + " " + str(mininfo[3]) + " " + str(mininfo[4]) + '\n')
     for d in range(coeff.shape[1]):
         axes[2, d].set_title("AZP " + title[d])
-        axes[2, d].set_xticks([])  # 去掉x轴
-        axes[2, d].set_yticks([])  # 去掉y轴
+        axes[2, d].set_xticks([])
+        axes[2, d].set_yticks([])
         im = axes[2, d].imshow(reg_pic(minreg[0], Side, minreg[1], dim=d), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[2, d], shrink=shrink_ratio)
     output_result(ofile, Side, minreg, "AZP")
@@ -127,8 +130,8 @@ for dataid in range(ids, idt):
               + str(ed - st) + " " + str(mininfo[3]) + " " + str(mininfo[4]) + '\n')
     for d in range(coeff.shape[1]):
         axes[3, d].set_title("RegKModels "+title[d])
-        axes[3, d].set_xticks([])  # 去掉x轴
-        axes[3, d].set_yticks([])  # 去掉y轴
+        axes[3, d].set_xticks([])
+        axes[3, d].set_yticks([])
         im = axes[3, d].imshow(reg_pic(minreg[0], Side, minreg[1], dim=d), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[3, d], shrink=shrink_ratio)
     output_result(ofile, Side, minreg, "RegionKModels")
@@ -152,8 +155,8 @@ for dataid in range(ids, idt):
         ed - st) + " " + str(mininfo[3]) + '\n')
     for d in range(coeff.shape[1]):
         axes[4, d].set_title("GWR "+title[d])
-        axes[4, d].set_xticks([])  # 去掉x轴
-        axes[4, d].set_yticks([])  # 去掉y轴
+        axes[4, d].set_xticks([])
+        axes[4, d].set_yticks([])
         im = axes[4, d].imshow(reg_pic(minreg[0], Side, minreg[1], dim=d), cmap=cmp, vmin=vmin, vmax=vmax)
         fig.colorbar(im, ax=axes[4, d], shrink=shrink_ratio)
     output_result(ofile, Side, minreg, "GWR_cluster")

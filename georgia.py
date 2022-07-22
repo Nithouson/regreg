@@ -10,8 +10,8 @@ cmp = "bwr"
 Kmax = [20, 20, 20, 60]
 Kmin = 2
 Kstep = 1
-runs = 10
-numid = 4
+runs = 1
+numid = 5
 
 log = open("Georgia_"+str(numid)+".txt", 'w')
 log.write(str(datetime.datetime.now().ctime())+'\n')
@@ -53,7 +53,6 @@ Xarr = Xarr.reshape((NCounty, NVar+1))
 Yarr = Yarr.reshape(NCounty)
 
 w = libpysal.weights.Rook.from_shapefile("./Georgia/Aggre.shp",idVariable="AreaId")
-
 
 outxls = xlwt.Workbook(encoding='utf-8')
 params = outxls.add_sheet('params')

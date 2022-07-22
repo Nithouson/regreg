@@ -2,7 +2,7 @@ from GridData5 import *
 from matplotlib import pyplot as plt
 
 Side = 25
-runs = 1
+runs = 3
 bias_y = 0.1
 
 cmp = "plasma"
@@ -13,10 +13,10 @@ plt.rcParams['font.size'] = 14
 for run in range(runs):
     print("Run " + str(run))
     data = Simulate(Side, [Const(0), Slope(1/24, 1/24, -1) , CosExpMul(22, 22)], bias_y)
-    # data = Simulate(Side, [Const(0), Slope(1/9, 1/9, -1), CosExpMul(9, 9)], bias_y)
+    # data = Simulate(Side, [Const(0), Slope(1/9, 1/9, -1), CosExpMul(9, 9)], bias_y)  # Side=10
     Xarr, Yarr, coeff = data[0], data[1], data[2]
-    ofile = open("econ_"+str(run)+".txt","w")
-    # ofile = open("econtest_" + str(run) + ".txt", "w")
+    ofile = open("econ_"+str(50+run)+".txt","w")
+    # ofile = open("econtest_" + str(run) + ".txt", "w") # Side=10
     output_data(ofile,Side,Xarr,Yarr)
 
     if run == runs-1:

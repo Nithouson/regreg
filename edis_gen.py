@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 
 Side = 25
 runs = 3
+
 bias_y = [0.1, 0.2, 0.3]
 noise_label = ["l","m","h"]
 zonenum = 5
@@ -20,8 +21,8 @@ for r in range(runs):
     for noi in range(len(bias_y)):
         data = Simulate_zone(Side, zonemap, valarr, bias_y[noi])
         Xarr, Yarr, coeff = data[0], data[1], data[2]
-        ofile = open("edis_" + str(50+r) + noise_label[noi]+".txt", "w")
-        #ofile = open("edistest_" + str(r) + noise_label[noi]+".txt", "w")
+        ofile = open('edis_' + str(50+r) + noise_label[noi]+".txt", "w")
+        #ofile = open('edistest_' + str(r) + noise_label[noi] + ".txt", "w") # Side=10
         output_data(ofile,Side,Xarr,Yarr,coeff)
         ofile.close()
         if r < 3 and noi == 0:

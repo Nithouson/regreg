@@ -6,18 +6,20 @@ from matplotlib import pyplot as plt
 import libpysal
 
 # Test Mode
-# Side = 10
-# dataid = 0
-# repeat = 5
-# Kmax = [5, 5, 5, 5]
-# func = [Const(0), Slope(1/9, 1/9, -1), CosExpMul(9, 9)]
+Side = 10
+dataid = 2
+repeat = 5
+Kmax = [5, 5, 5, 5]
+func = [Const(0), Slope(1/9, 1/9, -1), CosExpMul(9, 9)]
+prefix = "econtest_"
 
 # Run Mode
-Side = 25
-dataid = 0
-repeat = 50
-Kmax = [20, 20, 20, 60]
-func = [Const(0), Slope(1/24, 1/24, -1), CosExpMul(22, 22)]
+# Side = 25
+# dataid = 0
+# repeat = 50
+# Kmax = [20, 20, 20, 60]
+# func = [Const(0), Slope(1/24, 1/24, -1), CosExpMul(22, 22)]
+# prefix = "econ_"
 
 lamda = 3
 recordnum = 47
@@ -41,7 +43,7 @@ log.write("Method:\n KModels " + str(Kmin) + " " + str(Kmax[0]) + " "+str(Kstep)
           + " Reg_KModels " + str(Kmin)+" "+str(Kmax[2])+" "+str(Kstep)+"\n"
           + " GWR_cluster " + str(Kmin)+" "+str(Kmax[3])+" "+str(Kstep)+"\n")
 
-simdata = open("./synthetic/econ_"+str(dataid)+".txt")
+simdata = open("./synthetic/"+ prefix + str(dataid)+".txt")
 Xarr, Yarr = input_data_con(simdata, Side, len(func))
 coeff = GetCoeff(Side, func)
 coord = GetCoord(Side)
