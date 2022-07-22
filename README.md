@@ -7,7 +7,7 @@ This software aims to delineate geographically connected regions in the context 
 The software is built on Python 3.8 (or higher versions) as well as several Python packages.
 - Necessary
   - numpy, matplotlib, networkx
-  - scikit-learn (0.24.2, higher version may encounter compatibility error)
+  - scikit-learn (0.24.2, higher versions may encounter compatibility error)
   - libpysal, mgwr
   - xlrd, xlwt
 - Optional
@@ -17,7 +17,7 @@ The software is built on Python 3.8 (or higher versions) as well as several Pyth
 
 ## Core Modules
 
-- ``Algorithm5.py`` : implementation of the regionalization algorithms, including AZP, K-Models, Regional-K-Models, and GWR+K-Means.
+- ``Algorithm5.py`` : implementation of the regionalization algorithms, including K-Models (KM),  AZP, Regional-K-Models (RKM), and GWR+K-Means (GWR).
 - ``Network5.py`` : tool functions dealing with the adjacency network, region contiguity, etc.
 - ``GridData5.py`` : generating and handling simulated grid data.
 
@@ -25,7 +25,7 @@ The software is built on Python 3.8 (or higher versions) as well as several Pyth
 
 - ``synthetic/edis_*.txt`` : Dataset 1 (distinct latent regions), 25*25 grid, 50 simulations (```dataid```  0-49), each with three samples under different noise levels ('h' for high, 'm' for medium, 'l' for low), yet with the same latent regions of regression coefficients.
 
-- ``synthetic/econ_*.txt`` : Dataset 2 (continuous coefficient surfaces), 25*25 grid, 50 simulations (number 0-49).
+- ``synthetic/econ_*.txt`` : Dataset 2 (continuous coefficient surfaces), 25*25 grid, 50 simulations (```dataid``` 0-49).
 
 We also include several simulations on 10\*10 grid for debugging codes (``synthetic/edistest_*.txt``, ``synthetic/econtest_*.txt``), on which regionalization takes only a few seconds. 
 
@@ -49,7 +49,7 @@ We also include several simulations on 10\*10 grid for debugging codes (``synthe
 
 ### Real Data: Georgia Dataset
 
-- ``georgia.py`` : regionalization on the Georgia Dataset, with four considered algorithms
+- ``georgia.py`` : regionalization on the Georgia Dataset, using four considered algorithms
 
 # Function Interfaces
 
@@ -67,7 +67,7 @@ We also include several simulations on 10\*10 grid for debugging codes (``synthe
     - **w** (``pysal.weights.W``): spatial contiguity matrix of the $N$ areal units. The order of units must be consistent with ```Xarr``` and ```Yarr```.
     - **init_stoc_step** (``bool, default=True``): the way of region growing in initialization. If ``False``, all neighboring units of current region are merged into it. Otherwise, a randomly chosen neighboring unit is assigned into it. All our experiment use the default ``True`` value, as it increases the diversity of initial solutions.
  - **Returns:** 
-    - **label** (``list``): the region label for each unit, with length $N$. The $u$th unit is assigned to the region with index ``label[u]``. The region indices are integers from 0 to $K-1$.
+    - **label** (``list``): the region label for each unit, with length $N$. The $u$ th unit is assigned to the region with index ``label[u]``. The region indices are integers from 0 to $K-1$.
     - **iters** (``int``): the number of iterations.
 
   ```Python
@@ -77,12 +77,12 @@ AZP zone design algorithm for linear regression.
  - **Parameters**:  
     The same with ```kmodels```.
  - **Returns**: 
-    - **regions** (``list``): produced regions. Each element ``regions[r]`` is a list, containing indices of all units belong to it. It can be converted from ```label``` as follows: 
+    - **regions** (``list``): produced regions. Each element ``regions[r]`` is a list, containing indices of all units belong to the $r$ th region. It can be converted from ```label``` as follows: 
     ```Python
     units = np.arange(w.n).astype(int)
     regions = [units[label == r].tolist() for r in set(label)]
     ```
-    - **coeffs** (``list``): estimated coefficients for each region. ``coeff[r]`` is a list of length $M$, containing $M$ coefficients corresponding to the features in ```Xarr```, estimated with units in the $r$th region.
+    - **coeffs** (``list``): estimated coefficients for each region. ``coeff[r]`` is a list of length $M$, containing $M$ coefficients corresponding to the features in ```Xarr```. 
     - **iters** (``int``): the number of iterations.
 
 
@@ -108,7 +108,7 @@ GWR+K-Means zone design algorithm for linear regression.
 ```Python
 split_merge(Xarr, Yarr, w, clabel, lamda)
 ```
-Post-processing procedure to improve the solution and assure contiguity. Used after K-Models or GWR+K-Means.
+Post-processing procedure to improve the solution and impose contiguity. Used after K-Models and GWR+K-Means.
 
 - **Parameters**:   
    - **Xarr**, **Yarr**, **w**: see ```kmodels```.
@@ -153,7 +153,7 @@ If you use provided data, go straightly to step 2. Otherwise, use the script ```
 - **Side** : number of cells in each row and column of the grid. 
 - **runs**: number of simulations.  
 
-Then run the script. Files named ```edis_*.txt``` will be produced, and ```dataid```  numbered from 50. Note that three samples with different noise levels are generated in each simulation. Move these files to the ```synthetic``` directory for future use. The script will also show the latent region schemes generated with Voronoi polygons in the first three simulations , which produced **Figure 3**. This may cause errors if ```runs```<3.
+Then run the script. Files named ```edis_*.txt``` will be produced, and ```dataid```  numbered from 50. Note that three samples with different noise levels are generated in each simulation. Move these files to the ```synthetic``` directory for future use. The script will also show the latent region schemes generated with Voronoi polygons in the first three simulations , which produced **Figure 3**. This may cause error if ```runs```<3.
 
 ### 2. Regionalization
 
@@ -161,21 +161,21 @@ Use the script ```edis_reg.py``` to perform regionalization with the four consid
 - **Side** : number of cells in each side of the grid. Should be consistent with input data.
 - **ids, idt** : index range of input data. The code will process data with id from ```ids``` to ```idt```-1. 
 - **lamda** : the penalty factor $\lambda$ in the objective function.
-- **recordnum** : the number for this experiment, used in output files. 
+- **recordnum** : the number for this experiment, used to label output files. 
 - **prefix** : 'edis_' or 'edistest_'. Should be consistent with input data. 
 
-The script will generate a log file named ```RG(recordnum).txt```.  It records four lines for each sample, which is the summary for K-Models (KM), AZP, Regional-K-Models (RKM), GWR+K-Means (GWR), respectively. Each line includes: objective function value ```tc```, modelling error ```acc```, number of produced regions ```rgl```, executing time, selected $K$, and number of iterations ```iters``` (not applicable for GWR). **Table 2** is summarized from ```tc``` of 50 simulations. **Figure A1b** is summarized from execution times of 50 simulations.
+The script will generate a log file named ```RG(recordnum).txt```.  It records four lines for each sample, which is the summary for KM, AZP, RKM, GWR, respectively. Each line includes: objective function value ```tc```, modelling error ```acc```, number of produced regions ```rgl```, executing time, selected $K$, and number of iterations ```iters``` (not applicable for GWR). **Table 2** is summarized from ```tc``` of 50 simulations. **Figure A1b** is summarized from execution times of 50 simulations.
 
 For each ```dataid```, the program outputs:
-- A TXT file named ```result_(recordnum)_(dataid).txt```. The result of low noise data comes first, then medium and high noise, each contains results from four algorithms. For each algorithm, the file first records the delineated regions (a ```Side*Side``` matrix containing region index of each unit), then the estimated coefficients (the $r$th line is the intercept and linear coefficients for the $r$th region). Move these files to a ```log``` directory for future use.
+- A TXT file named ```result_(recordnum)_(dataid).txt```. The result of low noise data comes first, then medium and high noise, each contains results from four algorithms. For each algorithm, the file first records map of the delineated regions (a ```Side*Side``` matrix containing region index of each unit), then the estimated coefficients (the $r$ th line is the intercept and linear coefficients for the $r$ th region). Move these files to the ```log``` directory for future use.
 
-- A PNG file named with ```recordnum```, ```dataid``` and time, visualizing the estimated coefficients for each region (**Figure 6**). Futhermore, the script ```visualization/Plot_Regdis.py``` can reproduce such figures based on saved regionalization results (need to specify ```recordnum```, ```dataid```). 
+- A PNG file named with ```recordnum```, ```dataid``` and time, visualizing the estimated coefficients for each region (**Figure 6**). Futhermore, the script ```visualization/Plot_Regdis.py``` can reproduce such figures based on saved regionalization results in the ```log``` directory (need to specify ```recordnum``` and ```dataid```). 
 
 - A TXT file named ```kcurve_(recordnum)_(dataid).txt```. The result of low noise data comes first, then medium and high noise, each contains results from four algorithms (in the order KM, AZP, RKM, GWR). This file records ```tc```, ```acc```, ```rgl```, ```iters``` for each $K$. **Figure B2** shows ```tc``` values at a range of $K$.
 
 ### 3. Evaluation with RI and NMI
 
-To reproduce **Table 3**, use the scripts ```evaluation/Rand.py``` and ```evaluation/Mutual_Info.py``` to calculate RI and NMI for a set of regionalization results. For both scripts, first open and specify ```Side```, ```ids``` and ```idt```, as well as ```recordnum```. If all results use the same ```recordnum```, the ```recordnum``` function body should be ```return (recordnum)```. Else, use a conditional statements on ```dataid``` to specify ```recordnum```. Then run the script. The RI and NMI results for each sample of data are in generated Excel workbooks. 
+To reproduce **Table 3**, use the scripts ```evaluation/Rand.py``` and ```evaluation/Mutual_Info.py``` to calculate RI and NMI for a set of regionalization results. For both scripts, first open and specify ```Side```, ```ids``` and ```idt```, as well as ```recordnum```. If all results use the same ```recordnum```, the ```recordnum``` function body should be ```return (recordnum)```. Else, use conditional statements on ```dataid``` to specify ```recordnum```. Note that the related result files should be in the ```log``` directory. Then run the script. The RI and NMI results for each sample of data can be found in generated Excel workbooks. 
 
 ## Simulated Data: Dataset 2
 
@@ -196,9 +196,9 @@ Use the script ```econ_reg.py``` to perform regionalization with the four consid
 The script will generate a log file named ```RG(recordnum).txt```. The file structure is the same with log file of ```edis_reg.py```. Results of ```tc``` and execution times are also summarized in **Table 2** and **Figure A1b**, respectively. 
 
 For each ```dataid```, the program outputs:
-- A TXT file named ```result_(recordnum)_(dataid).txt```. It contains results from four algorithms. For each algorithm, the file first records the delineated regions (a ```Side*Side``` matrix containing region index of each unit), then the estimated coefficients (the $r$th line is the intercept and linear coefficients for the $r$th region). Move these files to a ```log``` directory for future use.
+- A TXT file named ```result_(recordnum)_(dataid).txt```. It contains results from four algorithms. For each algorithm, the file first records the delineated regions (a ```Side*Side``` matrix containing region index of each unit), then the estimated coefficients (the $r$ th line is the intercept and linear coefficients for the $r$ th region). Move these files to the ```log``` directory for future use.
 
-- A PNG file named with ```recordnum```, ```dataid``` and time, visualizing the estimated coefficients for each region (**Figure 7**). Futhermore, the script ```visualization/Plot_Regcon.py``` can reproduce such figures based on saved regionalization results (need to specify ```recordnum```, ```dataid```). 
+- A PNG file named with ```recordnum```, ```dataid``` and time, visualizing the estimated coefficients for each region (**Figure 7**). Futhermore, the script ```visualization/Plot_Regcon.py``` can reproduce such figures based on saved regionalization results in the ```log``` directory (need to specify ```recordnum```, ```dataid```). 
 
 ### 3. Stability Test
 
@@ -212,15 +212,15 @@ To reproduce **Figure B1**, run K-Models algorithm with different $\lambda$ valu
 
 The Georgia dataset is available from https://sgsup.asu.edu/sparc/multiscale-gwr. We provide simplified data to ease usage in our experiment:
 - ```Aggre.shp``` : a polygon Shapefile data of 159 Georgia counties. We aggregated polygons belong to the same county into multi-polygons, making it easy to generate PySAL spatial weights.
-- ```GData_utm.xls``` : a table containing explanatory and dependent variables for each county. Our code only uses data in the 'use' sheet, which we remove irrelevant fields.
+- ```GData_utm.xls``` : a table containing explanatory and dependent variables for each county. Our code only uses data in the 'use' sheet, where we remove irrelevant fields.
 
 The script ```georgia.py``` run the four considered regionalization algorithms on the Georgia dataset. You may change the following parameters:
 - **lambda** : the penalty factor for number of regions. $\lambda=3$ is used in our experiment.
 - **runs** : number of repetitions. Increasing this parameter may find better solution, with the cost of more computation time. 
-- **numid** : number of the experiment, used in the name of record files.
+- **numid** : number of the experiment, used to label output files.
 
 After running the script, results are recorded in two output files:
-- ```Georgia_(numid).txt``` : the log file. In the order of KM, AZP, RKM and GWR, it first lists ```tc```,  ```acc```, ```rgl```, executing time, selected $K$, and ```iters``` (not applicable for GWR) for each run. Then for the best solution (with the lowest ```tc```), it records the coefficients and F-test results. Each line contains: region index, number of units, estimated intercept and coefficients, the F-value and p-value of the overall F-test. Note that regions with less than 5 units are considered outliers, so the coefficients and F statistics are not calculated.
-- ```Georgia_(numid).xls``` : an Excel workbook. For each county, it records the region it belongs to, as well as the estimated intercept and coefficients, for the best solution from each of the four algorithms.
+- ```Georgia_(numid).txt``` : the log file. In the order of KM, AZP, RKM and GWR, it first lists ```tc```,  ```acc```, ```rgl```, executing time, selected $K$, and ```iters``` (not applicable for GWR) for each run. Then for the best solution (with the lowest ```tc```), it records the coefficients and F-test results. Each line contains: region index, number of units, estimated intercept and coefficients, the F-value and p-value of the overall F-test. Note that regions with less than 5 units are considered outliers, so the coefficients and F-statistics are not calculated.
+- ```Georgia_(numid).xls``` : an Excel workbook. For each county, it records the region it belongs to, as well as the estimated intercept and coefficients of that region. For each of the four algorithms, only the best solution is recorded .
 
-To visualize the results, join the output table ```Georgia_(numid).xls``` with ```Aggre.shp``` via the ```Area_key``` field. This can be performed with standard GIS softwares (e.g. QGIS). Our results are in the Shapefile ```Join4.shp```. After that, **Figure 8** and **Figure 9** can be rendered in a GIS environment using the joined Shapefile. 
+To visualize the results, join the output table ```Georgia_(numid).xls``` with ```Aggre.shp``` via the ```Area_key/AreaKey``` field. This can be performed using a standard GIS software (e.g. QGIS). Our results are in the Shapefile ```Join4.shp```. After that, **Figure 8** and **Figure 9** can be rendered in a GIS environment using the joined Shapefile. 
