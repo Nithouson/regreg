@@ -1,7 +1,6 @@
 # Overview
 
-This software aims to delineate geographically connected regions in the context of linear regression models with varying coefficients across regions.    
-Read our paper for more details:  
+This software aims to delineate geographically connected regions in the context of linear regression models with varying coefficients across regions. Read our paper for more details:  
 Hao Guo, Andre Python, Yu Liu. [A generalized regionalization framework for geographical modelling and its application in spatial regression](https://arxiv.org/abs/2206.09429). arXiv, 2022.
 
 # Environment & Dependencies
