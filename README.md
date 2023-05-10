@@ -1,6 +1,6 @@
 # Overview
 
-This software aims to delineate spatial regimes (geographically connected regions with varying coefficients across regions) in the context of linear regression models. Please read our paper for more details:    
+This software aims to delineate spatial regimes (geographically connected regions with varying coefficients across regions) in the context of linear regression models. Please refer to our paper for more details:    
 Hao Guo, Andre Python, Yu Liu. Extending regionalization algorithms to explore spatial process heterogeneity. [arXiv preprint](https://arxiv.org/abs/2206.09429), 2022.
 
 # Environment & Dependencies
@@ -189,10 +189,7 @@ To reproduce **Figure A1b**, run the two-stage K-Models algorithm with different
 
 ## Real Data: Georgia Dataset
 
-The Georgia dataset is available as sample data of the [MGWR software](https://sgsup.asu.edu/sparc/multiscale-gwr). We provide simplified data to ease usage in our experiment:
-
-- ```georgia/Aggre.shp``` : a polygon Shapefile data of 159 Georgia counties. We aggregated polygons belong to the same county into multi-polygons, making it easy to generate PySAL spatial weights.
-- ```georgia/GData_utm.xls``` : a table containing explanatory and dependent variables for each county. Our code only uses data in the 'use' sheet, where we remove irrelevant fields.
+The Georgia dataset is available as sample data of the [MGWR software](https://sgsup.asu.edu/sparc/multiscale-gwr). We aggregated polygons belong to the same county into multi-polygons, making it easy to generate PySAL spatial weights.
 
 The script ```src/georgia.py``` run the five considered algorithms on the Georgia dataset. You may change the following parameters:
 
@@ -207,14 +204,11 @@ After running the script, results are recorded in two output files:
 - ```Georgia_(numid).txt``` : the log file. It records the results at each number of regions $p$ (from ```pmin``` to ```pmax```). For each $p$, in the order of KM, AZP, RKM, GSK, and SKR, it first lists total SSR, execution time, number of iterations and merge operations (if applicable) for each run. Then for the best solution (with the lowest SSR), it records the coefficients and F-test results. Each line contains: region index, number of units, estimated coefficients, the F-value and p-value of the overall F-test. **Figure 5** visualizes the total SSR from the five considered algorithm at different $p$ values.  
 - ```Georgia_(numid).xls``` : an Excel workbook. For each county, it records the region it belongs to, as well as the estimated coefficients of that region. For each of the five algorithms, only the best solution is recorded.
 
-To visualize the results, join the output table ```Georgia_(numid).xls``` with ```Aggre.shp``` via the ```Area_key/AreaKey``` field with any standard GIS software (e.g. QGIS). After that, **Figure 6** and **Figure 7** can be rendered in a GIS environment using the joined Shapefile.  
+To visualize the results, join the output table ```Georgia_(numid).xls``` with the polygon Shapefile via the ```Area_key/AreaKey``` field with any standard GIS software (e.g. QGIS). After that, **Figure 6** and **Figure 7** can be rendered in a GIS environment using the joined Shapefile.  
 
 ## Real Data: King County Dataset  
 
-The King County house price dataset is available from [GeoDa center](https://geodacenter.github.io/data-and-lab//KingCounty-HouseSales2015/). We provide preprocessed data to ease usage in our experiment:
-
-- ```hedonic/kc_house_utm_r5.shp``` : a point  Shapefile data containing 20616 house locations. The data cleaning procedure is described in our paper.  
-- ```hedonic/kc_house_r5.xls``` : a table containing explanatory and dependent variables for each house sale record.  
+The King County house price dataset is available from [GeoDa center](https://geodacenter.github.io/data-and-lab//KingCounty-HouseSales2015/). The data processing procedure is described in our paper.   
 
 The script ```src/kinghouse.py``` run the two-stage K-Models and Skater regression  algorithms on the King County dataset. You may change the parameters including **pmin, pmax**, **Kfac**, **runs**, **numid**, and **min_region**. The meanings of these parameters are the same with those in ```src/georgia.py```. Note that ```min_region``` should be at least 18 in this analysis for valid significance test.  
 
@@ -223,4 +217,4 @@ After running the script, results are recorded in two output files:
 - ```Kinghouse_(numid).txt``` : the log file. The file structure is the same with the log file for the Georgia dataset.  
 - ```Kinghouse_(numid).xls``` : an Excel workbook. For each house location, it records the region it belongs to.  
 
-To visualize the results, join the output table ```Kinghouse_(numid).xls``` with ```kc_house_utm_r5.shp``` via the ```id``` field with any standard GIS software (e.g. QGIS). After that, **Figure 8** can be rendered in a GIS environment using the joined Shapefile.  
+To visualize the results, join the output table ```Kinghouse_(numid).xls``` with the point Shapefile via the ```id``` field with any standard GIS software (e.g. QGIS). After that, **Figure 8** can be rendered in a GIS environment using the joined Shapefile.  
