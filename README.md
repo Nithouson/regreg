@@ -21,9 +21,9 @@ The software is built on Python 3.9 (or higher versions) as well as several Pyth
 
 ## Core Modules
 
-- ``src/Algorithm8.py`` : Implementation of the regime delineation algorithms, including the two-stage K-Models (KM),  AZP, Regional-K-Models (RKM). We also incorporate the interfaces of GWR-Skater (GSK, from mgwr/spopt) and Skater regression (SKR, from spreg) for comparison.  
-- ``src/Network8.py`` : tool functions dealing with the adjacency network, region contiguity, etc.
-- ``src/GridData8.py`` : generating and handling simulated grid data.
+- ``src/Algorithm9.py`` : Implementation of the regime delineation algorithms, including the two-stage K-Models (KM),  AZP, Regional-K-Models (RKM). We also incorporate the interfaces of GWR-Skater (GSK, from mgwr/spopt) and Skater regression (SKR, from spreg) for comparison.  
+- ``src/Network9.py`` : tool functions dealing with the adjacency network, region contiguity, etc.
+- ``src/GridData9.py`` : generating and handling simulated grid data.
 
 ## Simulated Data
 
