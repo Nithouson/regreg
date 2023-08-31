@@ -1,16 +1,16 @@
 import random
-from GridData8 import *
+from GridData9 import *
 from matplotlib import pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
 Side = 25
-repeat = 50
-bias_y = [0.1, 0.2, 0.3]
+repeat = 1
+bias_y = [0, 0.1, 0.2, 0.3]
 shape_label = ["r","v","a"]
-noise_label = ["l","m","h"]
+noise_label = ["n","l","m","h"]
 zonenum = 5
 min_region = 10
-prefix = 'grid_'
+prefix = 'gridtest_'
 colors = ["#aec7e8", "#ffbb78", "#98df8a", "#ff9896", "#c5b0d5"]
 cmp = LinearSegmentedColormap.from_list("newcmp", colors)
 

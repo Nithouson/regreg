@@ -1,5 +1,5 @@
-from GridData8 import *
-from Algorithm8 import *
+from GridData9 import *
+from Algorithm9 import *
 import datetime
 from matplotlib import pyplot as plt
 import libpysal

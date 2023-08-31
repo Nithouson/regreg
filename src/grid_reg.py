@@ -1,26 +1,26 @@
-from GridData8 import *
-from Algorithm8 import *
+from GridData9 import *
+from Algorithm9 import *
 import datetime
 from matplotlib import pyplot as plt
 import libpysal
 
 # Test Mode
-Side = 10
-ids, idt = 0, 9
-n_regions = 5
-prefix = 'gridtest_'
-micro_clusters = 10
-min_region = 5
+#Side = 10
+#ids, idt = 0, 9
+#n_regions = 5
+#prefix = 'gridtest_'
+#micro_clusters = 10
+#min_region = 5
 
 # Run Mode
-# Side = 25
-# ids, idt = 0, 150
-# n_regions = 5
-# prefix = 'grid_'
-# micro_clusters = 20
-# min_region = 10
+Side = 25
+ids, idt = 0, 150
+n_regions = 5
+prefix = 'grid_'
+micro_clusters = 20
+min_region = 10
 
-recordnum = 65
+recordnum = 70
 
 # Zones params
 nvar = 2

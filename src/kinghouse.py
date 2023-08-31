@@ -1,5 +1,5 @@
-from Algorithm8 import *
-from GridData8 import output_coeff
+from Algorithm9 import *
+from GridData9 import output_coeff
 import networkx
 import datetime
 import xlrd
@@ -75,7 +75,7 @@ for n_regions in range(pmin, pmax+1):
     print(f"{n_regions} Regions")
 
     params = outxls.add_sheet(f'R{n_regions}')
-    params.write(0, 0, label='id')
+    params.write(0, 0, label='Area_Key')
     params.write(0, 1, label='Zone_KM')
     params.write(0, 2, label='Zone_SKR')
     for u in range(nobs):
@@ -123,7 +123,7 @@ for n_regions in range(pmin, pmax+1):
 
     # SkaterReg
     st = datetime.datetime.now()
-    rlabel, rcoeff = skater_reg(Xarr, Yarr, n_regions, w, min_size=min_region, verbose=2)
+    rlabel, rcoeff = skater_reg(Xarr, Yarr, n_regions, w, min_size=min_region)
     ed = datetime.datetime.now()
     regions = [units[rlabel == r].tolist() for r in set(rlabel)]
     ssr = regression_error(regions, Xarr, Yarr)
