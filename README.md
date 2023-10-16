@@ -1,7 +1,7 @@
 # Overview
 
 This software aims to delineate spatial regimes (geographically connected regions with varying coefficients across regions) in the context of linear regression models. Please refer to our paper for more details:    
-Hao Guo, Andre Python, Yu Liu. Extending regionalization algorithms to explore spatial process heterogeneity. [arXiv preprint](https://arxiv.org/abs/2206.09429), 2022.
+Hao Guo, Andre Python, Yu Liu. Extending regionalization algorithms to explore spatial process heterogeneity. International Journal of Geographical Information Science, 2023. doi:10.1080/13658816.2023.2266493.
 
 # Environment & Dependencies
 
