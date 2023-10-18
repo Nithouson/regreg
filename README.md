@@ -47,7 +47,7 @@ We also include several simulations on 10\*10 grid for debugging codes (``synthe
 
 # Function Interfaces
 
-## Algorithm8
+## Algorithm9
 
 ```Python
 kmodels(Xarr, Yarr, K, w, max_iter=10000, min_size=None, init_stoc_step=True, verbose=False)
