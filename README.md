@@ -3,7 +3,9 @@
 This software aims to delineate spatial regimes (geographically connected regions with varying coefficients across regions) in the context of linear regression models. Please refer to our paper for more details:    
 Hao Guo, Andre Python & Yu Liu (2023) Extending regionalization algorithms to explore spatial process heterogeneity, International Journal of Geographical Information Science, 37:11, 2319-2344, DOI: 10.1080/13658816.2023.2266493
 
-# Errata
+# Errata and Notes
+- p.2328 In Algorithm 3, line 8 should be "Find $$d_i\in \{1,...,p\}$$ such that $$u_i\in R_{d_i}$$"; line 10 should be $$r_i =\mathop{\arg\min}\limits_{1\le j \le p} |y_i-f(\mathbf{x}_i, \boldsymbol{\theta}_j)|$$.  
+
 - p.2331 Equation 12 should be $$\text{NMI}(\mathcal{R},\mathcal{R}') = \frac{2I(\mathcal{R},\mathcal{R}')}{H(\mathcal{R})+H(\mathcal{R'})}$$. The reported NMI values are correct. 
 
 - p.2336 "For multiple sales at the same location, we only retain the latest record." This involves ambiguity as several pairs of sales have the same location and date. One possible solution is to retain the sale with higher price. We have reproduced the King County experiment in this setting, verifying that this issue does not affect the main finding (lower SSR for K-Models than Skater-reg).   
