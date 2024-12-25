@@ -6,7 +6,7 @@ Hao Guo, Andre Python & Yu Liu (2023) Extending regionalization algorithms to ex
 # Errata and Notes
 - p.2321 Although the objective in Equation 1 does make sense, we mean to write $$\mathcal{L}(\mathcal{R})=\sum_{j=1}^p \sum_{1\le i_1<i_2\le n} I\[u_{i_1}, u_{i_2} \in R_j\]  \Vert\mathbf{x}\_{i_1}-\mathbf{x}\_{i_2}\Vert$$, used by the p-regions problem, for example.  
 
-- p.2326 The time complexity for two-stage K-Models algorithm (first stage) should be $$Km(m^2+n)+m^2n$$ for each iteration.  
+- p.2326 The time complexity for two-stage K-Models algorithm (first stage) should be $$O(Km(m^2+n)+m^2n)$$ for each iteration.  
 
 - p.2328 In Algorithm 3, line 8 should be "Find $$d_i\in \{1,...,p\}$$ such that $$u_i\in R_{d_i}$$"; line 10 should be $$r_i =\mathop{\arg\min}\limits_{1\le j \le p} |y_i-f(\mathbf{x}_i, \boldsymbol{\theta}_j)|$$.
 
